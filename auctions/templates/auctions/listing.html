@@ -1,0 +1,117 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}{{ listing.title }}{% endblock title %}
+
+
+{% block body %}
+
+    {% if request.user == winner.user and request.user != winner.listing.creator %}
+
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>You won this bid!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+    <div class="row mb-4">
+        <div class="col-8 offset-3">
+            <img src="{{ listing.image.url }}" alt="{{ listing.title }}" style="max-width: 70%; border-radius: 20px;">
+        </div>
+        {% if listing.active == False %}
+            <small style="color:white;">Closed listing</small>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-8 offset-3">
+            <div style="font-size: large;">
+                Title: {{ listing.title }}<br>
+                Description: {{ listing.description }}<br>
+                Category: {{ listing.category }}<br>
+                Created on: {{ listing.created }}<br>
+                Created by: {{ listing.creator }}<br>
+                {% if listing.bid == None %}
+                    Current bid: {{ listing.bid }}<br>
+                {% else %}
+                    Current bid: ${{ listing.bid }}<br>
+                {% endif %}
+
+                {% if listing.creator == request.user and listing.active == True %}
+                    <a href="{% url 'close' listing.id %}" class="btn btn-info">Close Listing</a>
+                {% endif %}
+
+                {% if remove == True %}
+                    <a href="{% url 'delete' listing.id %}" class="btn btn-primary offset-8">Remove from Watchlist</a>
+                {% elif remove == False %}
+                    <a href="{% url 'add' listing.id %}" class="btn btn-primary offset-8">Add to Watchlist</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if listing.active == True and form != None %}
+    <!--BidForm-->
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group row mt-3">
+                {{ form.errors }}
+                <label for="id_bid" class="ml-4 col-1 col-form-label">Bid</label>
+                <div class="col-3">
+                    {{ form.bid }}
+                    <small class="form-text text-muted">Bid should be greater than 0 and current bid.</small>
+                </div>
+                <div class="col-1 form-group">
+                    <input type="Submit" value="Place Bid" class="btn btn-success">
+                </div>
+            </div>
+        </form>
+
+        <!--CommentForm-->
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ co_form.non_field_errors }}
+            <div class="form-group row mt-3">
+                {{ co_form.errors }}
+                <label for="id_comment" class="ml-4 col-1 col-form-label">Comment</label>
+                <div class="col-3">
+                    {{ co_form.comment }}
+                </div>
+                <div class="col-1 form-group align-self-end">
+                    <input type="Submit" value="Comment" class="btn btn-success">
+                </div>
+            </div>
+        </form>
+
+    {% endif %}
+
+    <h5>Comments</h5>
+
+    <hr style="background-color: white;">
+
+    {% for comment in comments %}
+    <div class="row" style="color: white;">
+        <div class="col">
+            {{ comment.comment }}
+        </div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-3">
+            Posted by: <span style="color: white;">{{ comment }}</span>
+        </div>
+    </div>
+
+    <hr style="background-color: white;">
+
+    {% empty %}
+
+    None yet
+
+    {% endfor %}
+
+{% endblock body %}
+
+

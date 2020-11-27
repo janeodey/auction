@@ -1,0 +1,19 @@
+body {
+    padding-right: 10px;
+}
+
+
+footer h4
+{
+    color: darkgrey;
+}
+
+.sidebar
+{
+    color: blue;
+}
+
+.errorlist
+{
+    color: red;
+}
