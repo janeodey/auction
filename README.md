@@ -10,7 +10,7 @@ and active status. A signed in user also has the ability to add a listing of int
 and comment on existing listings. Whenever a listing is closed, the highest bidder becomes winner and is notified.
 
 [views.py](/auctions/views.py) defines the functions for all of the routes. The folder, [templates](/auctions/templates/auctions), holds the front-end HTML
-files. [db.sqlite3](/db.sqlite3) is a SQLite that was used for the project.
+files. [db.sqlite3](/db.sqlite3) is a SQLite database that was used for the project.
 
 A video of this application's demonstration is at https://youtu.be/MJZTLgjItCo
 
